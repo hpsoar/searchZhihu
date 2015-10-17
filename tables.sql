@@ -5,6 +5,7 @@ use zhihu;
 create table pages (
     id int unsigned not null auto_increment,
     page_id int unsigned not null,
+    url varchar(1023) not null,
     title char(255) not null,
     content text not null,
     update_time timestamp,
