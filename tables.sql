@@ -1,13 +1,13 @@
 # SQL statements used to create tables for the project.
 
-use zhihu;
+# use zhihu;
 
 create table pages (
     id int unsigned not null auto_increment,
     page_id int unsigned not null,
     url varchar(1023) not null,
     title char(255) not null,
-    content text not null,
+    content mediumtext not null,
     update_time timestamp,
     primary key (id),
     unique (page_id)
