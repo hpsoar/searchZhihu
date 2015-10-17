@@ -8,7 +8,6 @@ import urllib.error
 import urllib.request
 
 
-
 def crawl(start_url):
     """Crawl zhihu.com and store pages to local database."""
     pass
@@ -22,6 +21,8 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 '
                   '(KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'
 }
+
+
 def decode_url(url):
     """Decode html file from url to string."""
     try:
@@ -50,7 +51,6 @@ def decode_url(url):
     return file_string
 
 
-
 def open_url(url, headers):
     """Open url using urllib library, return the response."""
     request = urllib.request.Request(url, headers=headers)
@@ -67,9 +67,22 @@ def extract_link(html):
     pass
 
 
+title_pattern = re.compile(
+    r'<title>(?P<title>[^<]+)</title>'
+)
+
+
 def extract_title(html):
-    """Extract title of a web page."""
-    pass
+    """Extract title of a web page.
+
+    Only the main title is extracted.
+    For example, given <title>什么才算是真正的编程能力？ - 计算机科学 - 知乎</title>,
+    return 什么才算是真正的编程能力？.
+    """
+    match = title_pattern.search(html[:5000])
+    title = match.group('title').strip()
+    main_title = title.split(' ', maxsplit=1)[0]
+    return main_title
 
 
 def log_error(error):
