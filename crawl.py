@@ -60,11 +60,14 @@ def open_url(url, headers):
         raise
     else:
         return response
-
+link_pattern = re.compile(
+    r'href=["\'](?P<link>/question/\d+)["\']'
+)
 
 def extract_link(html):
-    """Extract web page links from html string."""
-    pass
+    """Extract web page links from html string. Here we only extract
+    question links."""
+    return re.findall(link_pattern, html)
 
 
 title_pattern = re.compile(
