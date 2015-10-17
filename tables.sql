@@ -20,4 +20,4 @@ create table keywords (
     primary key (id),
     index (keyword),
     index (page_id)
-)
+);
