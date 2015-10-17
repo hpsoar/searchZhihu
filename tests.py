@@ -3,7 +3,7 @@
 import unittest
 import urllib.error
 
-from crawl import decode_url, extract_title, extract_link
+from crawl import decode_url, extract_title, extract_link, link_to_url
 
 
 class TestDecodeURL(unittest.TestCase):
@@ -35,3 +35,17 @@ class TestExtractLink(unittest.TestCase):
         html = decode_url('http://www.zhihu.com/topic/19554298')
         links = extract_link(html)
         self.assertTrue(len(links) > 5)
+
+
+class TestLinkToURL(unittest.TestCase):
+    """Test link_to_url() in crawl.py."""
+
+    def test_link_to_url(self):
+        origin_url = 'http://www.zhihu.com/topic/19554298'
+        true_url = 'http://www.zhihu.com/question/21747929'
+        link = '/question/21747929'
+        url = link_to_url(link, origin_url)
+        self.assertEqual(url, true_url)
+        link = 'question/21747929'
+        url = link_to_url(link, origin_url)
+        self.assertEqual(url, true_url)

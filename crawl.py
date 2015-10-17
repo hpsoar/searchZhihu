@@ -60,9 +60,12 @@ def open_url(url, headers):
         raise
     else:
         return response
+
+
 link_pattern = re.compile(
     r'href=["\'](?P<link>/question/\d+)["\']'
 )
+
 
 def extract_link(html):
     """Extract web page links from html string. Here we only extract
@@ -86,6 +89,33 @@ def extract_title(html):
     title = match.group('title').strip()
     main_title = title.split(' ', maxsplit=1)[0]
     return main_title
+
+# This url pattern was built for production use, not following RFC 3986.
+url_pattern = re.compile(
+    r'(?P<protocol>https?://)'
+    r'(?P<host>([A-Za-z\d][A-Za-z\d\-]{0,61}[A-Za-z\d]?\.)+[A-Za-z\d]{2,7})'
+    r'(?P<port>:\d{1,5})?'
+    r'(?P<path>/.*)?'
+)
+
+
+def link_to_url(link, origin_url):
+    """Convert a link from origin_url to a valid url."""
+    url_match = url_pattern.match(origin_url)
+    protocol = url_match.group('protocol')
+    host = url_match.group('host')
+    port = url_match.group('port')
+    if port:
+        host += port
+    if link.startswith('http'):
+        url = link
+    elif link.startswith('//'):
+        url = protocol + link[2:]
+    elif link.startswith('/'):
+        url = protocol + host + link
+    else:
+        url = protocol + host + '/' + link
+    return url
 
 
 def log_error(error):
