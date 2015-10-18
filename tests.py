@@ -3,7 +3,7 @@
 import unittest
 import urllib.error
 
-from crawl import decode_url, extract_title, extract_link, link_to_url
+from crawl import decode_url, extract_title, extract_link, link_to_url, crawl
 
 
 class TestDecodeURL(unittest.TestCase):
@@ -49,3 +49,11 @@ class TestLinkToURL(unittest.TestCase):
         link = 'question/21747929'
         url = link_to_url(link, origin_url)
         self.assertEqual(url, true_url)
+
+
+class TestCrawl(unittest.TestCase):
+    """Test crawl() in crawl.py."""
+
+    def test_crawl(self):
+        """This test need temporary database."""
+        pass

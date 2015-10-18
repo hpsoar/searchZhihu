@@ -162,11 +162,11 @@ def link_to_url(link, origin_url):
 def log_error(url, error):
     """Log errors during crawl."""
     error_info = ''.join([
-        'Fail to decode: ', url, '\n', 'Error reason', error.reason, '\n'
+        'Fail to decode: ', url, '\n', 'Error reason: ', error.reason, '\n'
     ])
     with open('error_log.txt', 'a') as file:
         file.write(error_info)
 
 
 if __name__ == '__main__':
-    crawl('http://www.zhihu.com/topic/19554298/questions?page=', 1, 5000)
+    crawl('http://www.zhihu.com/topic/19554298/questions?page=', 3500, 5000)
