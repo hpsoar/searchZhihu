@@ -45,7 +45,7 @@ def rank(start=1, end=10000):
         # If table 'pages' doesn't contain current id, just continue
         except TypeError:
             continue
-        keywords = segment(title)
+        keywords = segment(title, for_search=True)
         score = rank_page(content)
         # Delete old result first
         c.execute('delete from keywords where page_id=%s', (page_id,))
@@ -116,3 +116,7 @@ def weight_vote(vote):
     else:
         score = vote
     return int(score)
+
+
+if __name__ == '__main__':
+    rank(1, 50000)
