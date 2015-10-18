@@ -2,6 +2,9 @@
 
 import jieba
 
+# Initialize jieba module since jieba use lazy loading
+jieba.initialize()
+
 # Build stop words set
 with open('stop_words.txt') as file:
     stop_words = {line.replace('\n', '') for line in file.readlines()}
