@@ -14,7 +14,5 @@ def segment(string):
     keywords = []
     for word in words:
         if word not in stop_words:
-            keywords.append(word)
+            keywords.append(word.lower())
     return keywords
-
-
