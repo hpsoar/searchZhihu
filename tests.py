@@ -5,7 +5,8 @@ import urllib.error
 
 from crawl import decode_url, extract_title, extract_link, link_to_url, crawl
 from segment import segment
-from rank import rank_page
+from rank import rank_page, rank
+from search import process_query
 
 
 class TestDecodeURL(unittest.TestCase):
@@ -86,3 +87,12 @@ class TestRank(unittest.TestCase):
 
     def test_rank(self):
         pass
+
+class TestProcessQuery(unittest.TestCase):
+    """Test process_query() in search.py."""
+
+    def test_process_query(self):
+        query = ['怎样学习Python？']
+        keywords = process_query(query)
+        self.assertEqual(keywords[0], 'python')
+        self.assertEqual(keywords[1], '学习')
