@@ -17,7 +17,7 @@ create table keywords (
     id int unsigned not null auto_increment,
     keyword char(31) not null,
     page_id int unsigned not null,
-    score smallint not null,
+    score int not null,
     primary key (id),
     index (keyword),
     index (page_id)
