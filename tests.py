@@ -4,6 +4,7 @@ import unittest
 import urllib.error
 
 from crawl import decode_url, extract_title, extract_link, link_to_url, crawl
+from segment import segment
 
 
 class TestDecodeURL(unittest.TestCase):
@@ -57,3 +58,16 @@ class TestCrawl(unittest.TestCase):
     def test_crawl(self):
         """This test need temporary database."""
         pass
+
+class TestSegment(unittest.TestCase):
+    """Test segment() in segment.py"""
+
+    def test_segment(self):
+        string = '写代码是一种怎样的体验？'
+        words = segment(string)
+        self.assertTrue('写' in words)
+        self.assertTrue('代码' in words)
+        self.assertTrue('是' not in words)
+        self.assertTrue('一种' in words)
+        self.assertTrue('怎样' not in words)
+        self.assertTrue('体验' in words)
