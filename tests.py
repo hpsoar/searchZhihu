@@ -5,6 +5,7 @@ import urllib.error
 
 from crawl import decode_url, extract_title, extract_link, link_to_url, crawl
 from segment import segment
+from rank import rank_page
 
 
 class TestDecodeURL(unittest.TestCase):
@@ -56,11 +57,11 @@ class TestCrawl(unittest.TestCase):
     """Test crawl() in crawl.py."""
 
     def test_crawl(self):
-        """This test need temporary database."""
+        """This test needs temporary database."""
         pass
 
 class TestSegment(unittest.TestCase):
-    """Test segment() in segment.py"""
+    """Test segment() in segment.py."""
 
     def test_segment(self):
         string = '写代码是一种怎样的体验？'
@@ -71,3 +72,11 @@ class TestSegment(unittest.TestCase):
         self.assertTrue('一种' in words)
         self.assertTrue('怎样' not in words)
         self.assertTrue('体验' in words)
+
+class TestRankPage(unittest.TestCase):
+    """Test rank_page() in rank.py."""
+
+    def test_rank_page(self):
+        hot_page = decode_url('http://www.zhihu.com/question/28676107')
+        cold_page = decode_url('http://www.zhihu.com/question/19555512')
+        self.assertTrue(rank_page(hot_page) > rank_page(cold_page))
