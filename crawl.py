@@ -8,9 +8,50 @@ import urllib.error
 import urllib.request
 
 
-def crawl(start_url):
+def crawl(base_url, start, crawl_num=1000):
     """Crawl zhihu.com and store pages to local database."""
-    pass
+    db = MySQLdb.connect(
+        host="localhost", user="coderbai", passwd="dontuseadmin",
+        db="zhihu", port=3306, charset="utf8"
+    )
+    c = db.cursor()
+    for page_num in range(start, start + crawl_num):
+        page_url = base_url + str(page_num)
+        try:
+            page_html = decode_url(page_url)
+        except urllib.request.HTTPError as error:
+            log_error(page_url, error)
+            # 404 code indicate page_num exceeds max page number on zhihu.com
+            if error.code == 404:
+                break
+            continue
+        except urllib.request.URLError as error:
+            log_error(page_url, error)
+            continue
+        print('Start crawl page' + str(page_num) + '\n')
+        question_urls = [
+            link_to_url(link, page_url) for link in extract_link(page_html)
+            ]
+        for question_url in question_urls:
+            time.sleep(1)
+            try:
+                question_html = decode_url(question_url)
+            except urllib.request.URLError as error:
+                log_error(question_url, error)
+                continue
+            title = extract_title(question_html)
+            question_id = int(question_url.rsplit('/', maxsplit=1)[-1])
+            c.execute(
+                'insert into pages (page_id, url, title, content) values '
+                '(%s, %s, %s, %s) on duplicate key update title=values(title), '
+                'content=values(content)',
+                (question_id, question_url, title, question_html)
+            )
+            # Commit transactions, otherwise insertion will fail
+            db.commit()
+    c.close()
+    db.close()
+    print('crawl finished!')
 
 # Header used to open urls.
 HEADERS = {
@@ -86,8 +127,8 @@ def extract_title(html):
     return 什么才算是真正的编程能力？.
     """
     match = title_pattern.search(html[:5000])
-    title = match.group('title').strip()
-    main_title = title.split(' ', maxsplit=1)[0]
+    title = match.group('title')
+    main_title = title.split('-', maxsplit=1)[0].strip()
     return main_title
 
 # This url pattern was built for production use, not following RFC 3986.
@@ -118,6 +159,14 @@ def link_to_url(link, origin_url):
     return url
 
 
-def log_error(error):
+def log_error(url, error):
     """Log errors during crawl."""
-    pass
+    error_info = ''.join([
+        'Fail to decode: ', url, '\n', 'Error reason', error.reason, '\n'
+    ])
+    with open('error_log.txt', 'a') as file:
+        file.write(error_info)
+
+
+if __name__ == '__main__':
+    crawl('http://www.zhihu.com/topic/19554298/questions?page=', 1, 5000)
