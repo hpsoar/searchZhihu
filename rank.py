@@ -7,6 +7,8 @@ The formula used to rank pages is:
 The formula used to weight votes is:
     weighted_score = sum((min(vote, range_end) - range_start) * factor
                          for range_start, range_end, factor in ranges)
+
+The ranges and factors used are as follows:
     range          factor        fast_calculate_num
      <= 10           1                 0
      (10, 20]        1/2               5
@@ -20,6 +22,43 @@ import MySQLdb
 import re
 
 from segment import segment
+
+
+def rank(start=1, end=10000):
+    """Rank pages in table 'pages' where start <= id < end.
+
+    For each page, compute page score and keywords, insert result to table
+    'keywords' or update results of this page in table 'keywords'.
+    """
+    db = MySQLdb.connect(
+        host="localhost", user="coderbai", passwd="dontuseadmin",
+        db="zhihu", port=3306, charset="utf8"
+    )
+    c = db.cursor()
+    for id in range(start, end):
+        if id % 1000 == 0:
+            print('Start process id ' + str(id))
+        c.execute('select page_id, title, content from pages where id=%s',
+                  (id,))
+        try:
+            page_id, title, content = c.fetchone()
+        # If table 'pages' doesn't contain current id, just continue
+        except TypeError:
+            continue
+        keywords = segment(title)
+        score = rank_page(content)
+        # Delete old result first
+        c.execute('delete from keywords where page_id=%s', (page_id,))
+        # Now insert new result
+        c.executemany(
+            'insert into keywords (keyword, page_id, score) values '
+            '(%s, %s, %s)', [(keyword, page_id, score) for keyword in keywords]
+        )
+        db.commit()
+    c.close()
+    db.close()
+    print('Rank from id {0} to id {1} finished!'.format(str(start), str(end)))
+
 
 vote_count_pattern = re.compile(
     r'data-votecount="(?P<count>\d+)"'
@@ -37,7 +76,7 @@ def rank_page(html):
     answer_count_match = answer_count_pattern.search(html)
     if answer_count_match:
         answer_count = int(answer_count_match.group('count'))
-    # Use top five answers to compute page rank
+    # Use top three answers to compute page rank
     votes.sort(reverse=True)
     votes = votes[:3]
     score = answer_count

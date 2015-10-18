@@ -80,3 +80,9 @@ class TestRankPage(unittest.TestCase):
         hot_page = decode_url('http://www.zhihu.com/question/28676107')
         cold_page = decode_url('http://www.zhihu.com/question/19555512')
         self.assertTrue(rank_page(hot_page) > rank_page(cold_page))
+
+class TestRank(unittest.TestCase):
+    """Test rank() in rank.py."""
+
+    def test_rank(self):
+        pass
