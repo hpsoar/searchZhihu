@@ -21,9 +21,9 @@ The ranges and factors used above are as follows:<pre>
      (5000, inf)     1/100             107.5</pre>
 
 Search results are given by search scores, the search score for a certain page
-corresponding to a certain query is:
+corresponding to a certain query is:<pre>
     search_score = min(keywords_num, 1) * page_score + extra_score * (keywords_num - 1)
-    Here keywords_num is the number of query keywords the pages contains.
+    Here keywords_num is the number of query keywords the pages contains.<pre>
 
 Special thanks to <a href="https://github.com/fxsjy/jieba">jieba</a> project.
 
