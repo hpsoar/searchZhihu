@@ -1,7 +1,7 @@
 """Rank web pages on zhihu.com.
 
 The formula used to rank pages is:
-    page_score = answer_count + weight(vote1) + ... + weight(vote3)
+    page_score = answer_count + weight(vote1) + weight(vote2) + weight(vote3)
     Here vote1 to vote3 are the top three answers of the page.
 
 The formula used to weight votes is:

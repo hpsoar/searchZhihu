@@ -1,4 +1,11 @@
-"""Search contents on zhihu.com."""
+"""Search contents on zhihu.com.
+
+Search results are given by search scores, the search score for a certain page
+corresponding to a certain query is:
+    search_score = min(keywords_num, 1) * page_score +
+                       extra_score * (keywords_num - 1)
+    Here keywords_num is the number of query keywords the pages contains.
+"""
 
 import MySQLdb
 import string

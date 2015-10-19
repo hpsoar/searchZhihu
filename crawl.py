@@ -29,11 +29,10 @@ def crawl(base_url, start, crawl_num=1000):
             log_error(page_url, error)
             continue
         print('Start crawl page' + str(page_num) + '\n')
-        question_urls = [
-            link_to_url(link, page_url) for link in extract_link(page_html)
-            ]
+        question_urls = [link_to_url(link, page_url)
+                         for link in extract_link(page_html)]
         for question_url in question_urls:
-            time.sleep(1)
+            time.sleep(0.5)
             try:
                 question_html = decode_url(question_url)
             except urllib.request.URLError as error:
@@ -51,7 +50,8 @@ def crawl(base_url, start, crawl_num=1000):
             db.commit()
     c.close()
     db.close()
-    print('crawl finished!')
+    print('Crawl from page {0} to page {1} finished!'.format(
+        str(start), str(start + crawl_num)))
 
 # Header used to open urls.
 HEADERS = {
@@ -169,4 +169,4 @@ def log_error(url, error):
 
 
 if __name__ == '__main__':
-    crawl('http://www.zhihu.com/topic/19554298/questions?page=', 3500, 5000)
+    crawl('http://www.zhihu.com/topic/19554298/questions?page=', 1, 5000)
