@@ -31,7 +31,7 @@ class Search:
         # Start index for get_contents()
         self.start = 0
         # Extra_score is awarded to pages contain multiple keywords
-        self.extra_score = 300
+        self.extra_score = 200
         self.query = query
         self.keywords = self.process_query()
         self.page_ids = self.get_page_ids()
