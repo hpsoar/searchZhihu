@@ -27,7 +27,6 @@ corresponding to a certain query is:<pre>
 
 Example:<pre>
  $ python3 search.py 怎样学习编程？
-
  ('我学编程为什么难？是思维方式不对还是学习方式不对？', 'http://www.zhihu.com/question/27436363')
  ('26 岁开始学编程晚了吗？', 'http://www.zhihu.com/question/19562626')
  ('初中生学习编程是不务正业吗？', 'http://www.zhihu.com/question/24693675')
