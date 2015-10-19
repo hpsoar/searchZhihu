@@ -9,7 +9,7 @@ The formula used to rank pages on Zhihu is:<pre>
 
 The formula used to weight votes is:<pre>
     weighted_score = sum((min(vote, range_end) - range_start) * factor
-                         for range_start, range_end, factor in ranges)<pre>
+                         for range_start, range_end, factor in ranges)</pre>
 
 The ranges and factors used above are as follows:<pre>
     range          factor        fast_calculate_num
@@ -23,7 +23,7 @@ The ranges and factors used above are as follows:<pre>
 Search results are given by search scores, the search score for a certain page
 corresponding to a certain query is:<pre>
     search_score = min(keywords_num, 1) * page_score + extra_score * (keywords_num - 1)
-    Here keywords_num is the number of query keywords the pages contains.<pre>
+    Here keywords_num is the number of query keywords the pages contains.</pre>
 
 Special thanks to <a href="https://github.com/fxsjy/jieba">jieba</a> project.
 
