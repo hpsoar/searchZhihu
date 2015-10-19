@@ -25,6 +25,6 @@ corresponding to a certain query is:
     search_score = min(keywords_num, 1) * page_score + extra_score * (keywords_num - 1)
     Here keywords_num is the number of query keywords the pages contains.
 
-Special thanks to <a href="https://github.com/fxsjy/jieba>jieba</a> project.
+Special thanks to <a href="https://github.com/fxsjy/jieba">jieba</a> project.
 
 MIT license.
